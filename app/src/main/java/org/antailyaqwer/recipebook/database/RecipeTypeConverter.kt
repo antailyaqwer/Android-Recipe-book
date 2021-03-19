@@ -1,6 +1,7 @@
 package org.antailyaqwer.recipebook.database
 
 import androidx.room.TypeConverter
+import com.google.gson.Gson
 import java.util.*
 
 class RecipeTypeConverter {
@@ -32,4 +33,12 @@ class RecipeTypeConverter {
             Date(it)
         }
     }
+
+    @TypeConverter
+    fun fromImages(images: List<String>): String? =
+        Gson().toJson(images)
+
+    @TypeConverter
+    fun toImages(images: String?): List<String> =
+        Gson().fromJson(images, Array<String>::class.java).toList()
 }

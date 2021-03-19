@@ -11,16 +11,14 @@ interface RecipeDao {
     fun getRecipe(id: UUID): LiveData<RecipeEntity?>
 
     @Query(
-        "SELECT name, lastUpdated, description " +
-                "FROM recipeentity ORDER BY " +
+        "SELECT * FROM recipeentity ORDER BY " +
                 "CASE WHEN :sortType = 1 THEN name END ASC,  " +
                 "CASE WHEN :sortType = 0 THEN name END DESC"
     )
     fun getAllRecipesOrderedByName(sortType: Boolean = false): LiveData<List<RecipeEntity>>
 
     @Query(
-        "SELECT name, lastUpdated, description " +
-                "FROM recipeentity ORDER BY " +
+        "SELECT * FROM recipeentity ORDER BY " +
                 "CASE WHEN :sortType = 1 THEN lastUpdated END ASC,  " +
                 "CASE WHEN :sortType = 0 THEN lastUpdated END DESC"
     )
