@@ -2,7 +2,9 @@ package org.antailyaqwer.recipebook.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import java.util.*
 
 @Dao
@@ -23,4 +25,10 @@ interface RecipeDao {
                 "CASE WHEN :sortType = 0 THEN lastUpdated END DESC"
     )
     fun getAllRecipesOrderedByLastUpdated(sortType: Boolean = false): LiveData<List<RecipeEntity>>
+
+    @Update
+    fun updateRecipe(recipe: RecipeEntity)
+
+    @Insert
+    fun addRecipe(recipe: RecipeEntity)
 }
