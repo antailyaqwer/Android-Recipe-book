@@ -40,7 +40,6 @@ class RecipeListFragment private constructor() : Fragment() {
         recyclerView = view.findViewById(R.id.recipe_recycle_view) as RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = RecipeListAdapter()
-//        listViewModel.tempFun()
         return view
     }
 
