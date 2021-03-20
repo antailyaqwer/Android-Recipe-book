@@ -9,7 +9,6 @@ import java.util.*
 import java.util.concurrent.Executors
 
 private const val DATABASE_NAME = "recipe-database"
-//TODO maybe change database name
 
 class Repository private constructor(context: Context) {
 
@@ -77,8 +76,8 @@ class Repository private constructor(context: Context) {
         fun initialize(context: Context) {
             if (INSTANCE == null) INSTANCE = Repository(context)
         }
-    }
 
-    fun get(): Repository =
-        INSTANCE ?: throw IllegalStateException("Repository must be initialized")
+        fun get(): Repository =
+            INSTANCE ?: throw IllegalStateException("Repository must be initialized")
+    }
 }
