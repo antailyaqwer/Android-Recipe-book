@@ -6,11 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import java.util.*
 
-class RecipeListFragment : Fragment() {
+class RecipeListFragment private constructor(): Fragment() {
 
-    companion object {
-        fun newInstance() = RecipeListFragment()
+    interface Callbacks {
+        fun onRecipeSelected(recipeID: UUID)
     }
 
     private lateinit var viewModel: RecipeListViewModel
@@ -28,4 +29,7 @@ class RecipeListFragment : Fragment() {
         // TODO: Use the ViewModel
     }
 
+    companion object {
+        fun newInstance() = RecipeListFragment()
+    }
 }

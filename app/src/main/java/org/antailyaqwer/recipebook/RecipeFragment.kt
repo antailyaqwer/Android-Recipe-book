@@ -6,12 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import java.util.*
 
-class RecipeFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = RecipeFragment()
-    }
+class RecipeFragment private constructor() : Fragment() {
 
     private lateinit var viewModel: RecipeViewModel
 
@@ -28,4 +25,12 @@ class RecipeFragment : Fragment() {
         // TODO: Use the ViewModel
     }
 
+    companion object {
+        fun newInstance(recipeId: UUID): RecipeFragment =
+            RecipeFragment().apply {
+                arguments = Bundle().apply {
+                    putSerializable("recipe_id", recipeId)
+                }
+            }
+    }
 }
