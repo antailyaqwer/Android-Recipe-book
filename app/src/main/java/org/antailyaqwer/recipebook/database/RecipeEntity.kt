@@ -12,6 +12,7 @@ data class RecipeEntity(
     val name: String,
     val images: List<String>,
 //    @Expose var lastUpdated: Date,
+//    var lastUpdated: Date,
     var lastUpdated: Int,
     val description: String,
     val instructions: String,

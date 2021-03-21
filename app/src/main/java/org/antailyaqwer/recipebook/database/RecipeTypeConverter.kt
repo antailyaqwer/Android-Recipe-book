@@ -20,7 +20,20 @@ class RecipeTypeConverter {
 //        // Для совместимости Long и Int в миллисекундах
 //        return tempDate?.toInt()?.div(1000)
 //    }
+
+//    @TypeConverter
+//    fun fromDate(date: Date?): Long? = try {
+//        date?.time
+//    } catch (e: Exception) {
+//        0L
+//    }
 //
+//    @TypeConverter
+//    fun toDate(date: Long?): Date? = try {
+//        date?.let { Date(it) }
+//    } catch (e: Exception) {
+//        Date()
+//    }
 //    @TypeConverter
 //    fun toDate(date: Int?): Date? {
 //        var tempDate: Long? = null

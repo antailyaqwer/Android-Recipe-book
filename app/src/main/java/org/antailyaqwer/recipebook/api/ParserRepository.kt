@@ -5,11 +5,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.GsonBuilder
 import org.antailyaqwer.recipebook.database.RecipeEntity
+import org.antailyaqwer.recipebook.database.RecipeTypeConverter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.text.DateFormat
+import java.util.*
 
 private const val TAG = "ParserRepository"
 
@@ -24,6 +27,7 @@ class ParserRepository {
                 GsonConverterFactory.create(
                     GsonBuilder()
 //                        .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+//                        .setDateFormat(DateFormat.FULL, DateFormat.FULL)
 //                        .excludeFieldsWithoutExposeAnnotation()
                         .create()
                 )
