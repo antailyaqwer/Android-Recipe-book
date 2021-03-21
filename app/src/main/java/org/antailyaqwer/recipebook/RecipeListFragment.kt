@@ -40,6 +40,9 @@ class RecipeListFragment private constructor() : Fragment() {
         recyclerView = view.findViewById(R.id.recipe_recycle_view) as RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = RecipeListAdapter()
+
+        //TODO первый парсинг, стоит переместить
+        listViewModel.parseObjects()
         return view
     }
 
@@ -91,7 +94,7 @@ class RecipeListFragment private constructor() : Fragment() {
         }
 
         override fun onClick(v: View?) {
-            callbacks?.onRecipeSelected(recipe.id)
+            callbacks?.onRecipeSelected(recipe.uuid)
         }
     }
 

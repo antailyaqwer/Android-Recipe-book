@@ -1,9 +1,12 @@
 package org.antailyaqwer.recipebook.database
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
 import androidx.room.Room
+import org.antailyaqwer.recipebook.api.ParserRepository
 import java.lang.IllegalStateException
 import java.util.*
 import java.util.concurrent.Executors
@@ -20,13 +23,24 @@ class Repository private constructor(context: Context) {
     private val recipeDao = database.recipeDao()
     private val executor = Executors.newSingleThreadExecutor()
 
+    //TODO Возможно, переместить парсинг отсюда
+    private val parserRepository = ParserRepository()
+    fun parseObjects() {
+        parserRepository.getRecipes().map {
+            it.forEach { recipe ->
+                Log.d("Repository", "trying to fetch recipes")
+                addRecipe(recipe)
+            }
+        }
+    }
+
     fun getRecipe(id: UUID): LiveData<RecipeEntity?> = recipeDao.getRecipe(id)
 
-    fun getAllRecipesOrderedByName(sortType: Boolean = false): LiveData<List<RecipeEntity>> =
-        recipeDao.getAllRecipesOrderedByName(sortType)
+    fun getAllRecipesOrderedByNameAscending(): LiveData<List<RecipeEntity>> =
+        recipeDao.getAllRecipesOrderedByNameAscending()
 
-    fun getAllRecipesOrderedByLastUpdated(sortType: Boolean = false): LiveData<List<RecipeEntity>> =
-        recipeDao.getAllRecipesOrderedByLastUpdated(sortType)
+    fun getAllRecipesOrderedByDateAscending(): LiveData<List<RecipeEntity>> =
+        recipeDao.getAllRecipesOrderedByDateAscending()
 
     fun updateRecipe(recipe: RecipeEntity) {
         executor.execute {
@@ -40,17 +54,14 @@ class Repository private constructor(context: Context) {
         }
     }
 
-    fun hasRecipe(recipe: RecipeEntity, lifecycleOwner: LifecycleOwner): Boolean {
+    fun hasRecipe(recipe: RecipeEntity): Boolean {
         var temp = false
         executor.execute {
-            getAllRecipesOrderedByName().observe(
-                lifecycleOwner,
-                { _recipe ->
-                    if (_recipe.any {
-                            recipe.id == it.id
-                        }) temp = true
-                }
-            )
+            getAllRecipesOrderedByNameAscending().map {
+                if (it.any { _recipe ->
+                        recipe.uuid == _recipe.uuid
+                    }) temp = true
+            }
         }
         return temp
     }
@@ -58,14 +69,11 @@ class Repository private constructor(context: Context) {
     fun needUpdate(recipe: RecipeEntity, lifecycleOwner: LifecycleOwner): Boolean {
         var temp = false
         executor.execute {
-            getAllRecipesOrderedByName().observe(
-                lifecycleOwner,
-                { _recipe ->
-                    if (_recipe.any {
-                            recipe.id == it.id && recipe.lastUpdated > it.lastUpdated
-                        }) temp = true
-                }
-            )
+            getAllRecipesOrderedByNameAscending().map {
+                if (it.any { _recipe ->
+                        recipe.uuid == _recipe.uuid && recipe.lastUpdated > _recipe.lastUpdated
+                    }) temp = true
+            }
         }
         return temp
     }

@@ -61,7 +61,6 @@ class RecipeFragment private constructor() : Fragment() {
         difficultyTextView.text = recipe.difficulty.toString()
         descriptionTextView.text = recipe.description
         instructionsTextView.text = recipe.instructions
-
     }
 
     companion object {

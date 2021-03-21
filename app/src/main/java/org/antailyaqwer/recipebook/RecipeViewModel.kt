@@ -20,7 +20,7 @@ class RecipeViewModel : ViewModel() {
     }
 
     fun saveRecipe(recipeEntity: RecipeEntity, lifecycleOwner: LifecycleOwner) {
-        if (repository.hasRecipe(recipeEntity, lifecycleOwner)) {
+        if (repository.hasRecipe(recipeEntity)) {
             repository.updateRecipe(recipeEntity)
         }
     }
