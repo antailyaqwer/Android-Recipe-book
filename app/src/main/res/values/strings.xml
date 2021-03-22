@@ -2,5 +2,7 @@
     <string name="app_name">Recipe book</string>
     <string name="image_of_recipe">Image of recipe</string>
     <string name="search">Search</string>
-    <string name="back_button">Back button</string>
+    <string name="clear_search">Clear search</string>
+    <string name="sort_recipes_by_name">Sort recipes by name</string>
+    <string name="sort_recipes_by_date">Sort recipes by date</string>
 </resources>
