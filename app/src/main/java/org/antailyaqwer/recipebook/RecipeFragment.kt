@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.viewModels
+import com.squareup.picasso.Picasso
 import org.antailyaqwer.recipebook.database.RecipeEntity
 import java.util.*
 
@@ -55,11 +56,14 @@ class RecipeFragment : Fragment() {
 
     private fun updateUI() {
         //TODO изменить ImageView
-//        imageView.
+        Picasso.get()
+            .load(recipe.images[0])
+            .into(imageView)
         nameTextView.text = recipe.name
-        dateTextView.text = recipe.lastUpdated.toString()
-        difficultyTextView.text = recipe.difficulty.toString()
+        dateTextView.text = "Last Updated: ${recipe.lastUpdated.toString()}"
+        difficultyTextView.text = "Difficulty: ${recipe.difficulty.toString()}"
         descriptionTextView.text = recipe.description
+        //TODO Изменить разбиение по строкам.
         instructionsTextView.text = recipe.instructions
     }
 
