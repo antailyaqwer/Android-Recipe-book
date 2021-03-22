@@ -1,17 +1,21 @@
 package org.antailyaqwer.recipebook.database
 
+import androidx.annotation.Nullable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 import java.util.*
-import kotlin.collections.ArrayList
 
 @Entity
 data class RecipeEntity(
-    @PrimaryKey val id: UUID = UUID.randomUUID(),
+    @PrimaryKey val uuid: UUID,
     val name: String,
-    val images: ArrayList<String>,
-    var lastUpdated: Date,
-    val description: String,
-    val instructions: String,
-    val difficulty: Int
+    val images: List<String?>,
+//    @Expose var lastUpdated: Date,
+//    var lastUpdated: Date,
+    var lastUpdated: Int,
+    val description: String?,
+    val instructions: String?,
+    val difficulty: Int?
 )
