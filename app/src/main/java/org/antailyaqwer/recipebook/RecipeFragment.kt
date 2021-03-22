@@ -57,19 +57,15 @@ class RecipeFragment : Fragment() {
     }
 
     private fun updateUI() {
-        //TODO изменить ImageView
         Picasso.get()
             .load(recipe.images[0])
             .into(imageView)
         nameTextView.text = recipe.name
         dateTextView.text = try {
-            val temp =
-                recipe.lastUpdated.toString().let {
-                    Date(it)
-                }
+            val temp = Date(recipe.lastUpdated.toLong())
             DateFormat.format("dd/MM/yyyy HH:mm", temp)
         } catch (e: Exception) {
-            Log.d("RecipeFragment", "Can'tParseDate", e as Throwable)
+            Log.d("RecipeFragment", "Can't Parse Date", e as Throwable)
             "Can't parse date"
         }
         difficultyTextView.text = "Difficulty: ${recipe.difficulty.toString()}"
