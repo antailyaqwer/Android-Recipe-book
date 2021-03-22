@@ -2,7 +2,6 @@ package org.antailyaqwer.recipebook
 
 import androidx.lifecycle.*
 import org.antailyaqwer.recipebook.api.ParserRepository
-import org.antailyaqwer.recipebook.database.RecipeEntity
 import org.antailyaqwer.recipebook.database.Repository
 
 private const val TAG = "RecipeListViewModel"
@@ -16,13 +15,9 @@ class RecipeListViewModel : ViewModel() {
         ParserRepository().getRecipes()
     }
 
-    fun searchByName(query: String) =
-        repository.searchByName(query)
+    fun searchByNameOrDescriptionOrInstructions(query: String) =
+        repository.searchByNameOrDescriptionOrInstructions(query)
 
     fun getAllRecipesByNameAscending() =
         repository.getAllRecipesOrderedByNameAscending()
-
-    fun searchByDate(query: String) {
-        recipeListLiveData = repository.searchByDate(query)
-    }
 }
