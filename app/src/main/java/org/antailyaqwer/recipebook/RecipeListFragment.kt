@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import org.antailyaqwer.recipebook.database.RecipeEntity
 import java.util.*
 
@@ -70,7 +71,7 @@ class RecipeListFragment : Fragment() {
         View.OnClickListener {
 
         private lateinit var recipe: RecipeEntity
-        private val recipeImageView: ImageView =
+        private var recipeImageView: ImageView =
             itemView.findViewById(R.id.recipe_image_list) as ImageView
         private val nameTextView: TextView =
             itemView.findViewById(R.id.recipe_name_list) as TextView
@@ -84,14 +85,12 @@ class RecipeListFragment : Fragment() {
         fun bind(recipe: RecipeEntity) {
             this.recipe = recipe
             //TODO Изменить строку на картинку
-//            recipeImageView = ""
+            Picasso.get()
+                .load(recipe.images[0])
+                .into(recipeImageView)
+
             nameTextView.text = recipe.name
             if (recipe.description != null) {
-//                var temp = ""
-//                recipe.description.lines().forEachIndexed { index, s ->
-//                    if (index < 2) temp += s
-//                }
-//                descriptionTextView.text = temp
                 val regex = """^.*?[\.!\?](?:\s|$)""".toRegex()
                 descriptionTextView.text =
                     regex.find(recipe.description)?.value ?: ""
