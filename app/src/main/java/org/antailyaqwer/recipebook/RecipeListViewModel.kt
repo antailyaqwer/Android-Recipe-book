@@ -9,10 +9,20 @@ private const val TAG = "RecipeListViewModel"
 
 class RecipeListViewModel : ViewModel() {
     private val repository = Repository.get()
-    val recipeListLiveData = repository.getAllRecipesOrderedByNameAscending()
-    private lateinit var mLiveData: MutableLiveData<List<RecipeEntity>>
+    var recipeListLiveData = repository.getAllRecipesOrderedByNameAscending()
+//    private lateinit var mLiveData: MutableLiveData<List<RecipeEntity>>
 
     fun parseObjects() {
         ParserRepository().getRecipes()
+    }
+
+    fun searchByName(query: String) =
+        repository.searchByName(query)
+
+    fun getAllRecipesByNameAscending() =
+        repository.getAllRecipesOrderedByNameAscending()
+
+    fun searchByDate(query: String) {
+        recipeListLiveData = repository.searchByDate(query)
     }
 }

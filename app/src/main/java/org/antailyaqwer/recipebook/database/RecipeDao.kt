@@ -43,4 +43,10 @@ interface RecipeDao {
 
     @Insert
     fun addRecipe(recipe: RecipeEntity)
+
+    @Query("SELECT * FROM recipeentity WHERE name LIKE :query")
+    fun searchByName(query: String): LiveData<List<RecipeEntity>>
+
+    @Query("SELECT * FROM recipeentity WHERE lastUpdated LIKE :query")
+    fun searchByDate(query: String): LiveData<List<RecipeEntity>>
 }

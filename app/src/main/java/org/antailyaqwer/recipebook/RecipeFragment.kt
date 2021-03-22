@@ -29,6 +29,7 @@ class RecipeFragment : Fragment() {
         super.onCreate(savedInstanceState)
         val recipeId: UUID = arguments?.getSerializable("id") as UUID
         viewModel.loadRecipe(recipeId)
+        setHasOptionsMenu(false)
     }
 
     override fun onCreateView(

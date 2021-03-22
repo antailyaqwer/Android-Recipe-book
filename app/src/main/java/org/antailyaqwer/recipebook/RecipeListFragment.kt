@@ -2,12 +2,12 @@ package org.antailyaqwer.recipebook
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.*
 import com.squareup.picasso.Picasso
@@ -28,6 +28,11 @@ class RecipeListFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         callbacks = context as Callbacks?
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -57,6 +62,37 @@ class RecipeListFragment : Fragment() {
         callbacks = null
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+
+        inflater.inflate(R.menu.recipe_list_item, menu)
+        val searchItem: MenuItem = menu.findItem(R.id.search_bar_recipe)
+        val searchView = searchItem.actionView as SearchView
+
+        searchView.apply {
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    Log.d("RecipeListFragment", "text: $newText")
+                    if (newText == null || newText.isEmpty()) {
+                        listViewModel.getAllRecipesByNameAscending().observe(viewLifecycleOwner) {
+                            updateUI(it)
+                        }
+                    } else {
+                        listViewModel.searchByName(newText)
+                            .observe(viewLifecycleOwner) {
+                                updateUI(it)
+                            }
+                    }
+                    return true
+                }
+            })
+        }
+    }
+
     private fun updateUI(recipes: List<RecipeEntity>) {
         (recyclerView.adapter as RecipeListAdapter).submitList(recipes)
     }
@@ -82,7 +118,6 @@ class RecipeListFragment : Fragment() {
 
         fun bind(recipe: RecipeEntity) {
             this.recipe = recipe
-            //TODO Изменить строку на картинку
             Picasso.get()
                 .load(recipe.images[0])
                 .into(recipeImageView)
