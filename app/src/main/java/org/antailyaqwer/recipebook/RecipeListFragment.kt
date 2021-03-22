@@ -82,7 +82,7 @@ class RecipeListFragment : Fragment() {
                             updateUI(it)
                         }
                     } else {
-                        listViewModel.searchByName(newText)
+                        listViewModel.searchByNameOrDescriptionOrInstructions(newText)
                             .observe(viewLifecycleOwner) {
                                 updateUI(it)
                             }

@@ -30,11 +30,10 @@ class Repository private constructor(context: Context) {
     fun getAllRecipesOrderedByDateAscending(): LiveData<List<RecipeEntity>> =
         recipeDao.getAllRecipesOrderedByDateAscending()
 
-    fun searchByName(query: String): LiveData<List<RecipeEntity>> =
-        recipeDao.searchByName(StringBuilder().append(query, "%").toString())
-
-    fun searchByDate(query: String): LiveData<List<RecipeEntity>> =
-        recipeDao.searchByDate(StringBuilder().append(query, "%").toString())
+    fun searchByNameOrDescriptionOrInstructions(query: String): LiveData<List<RecipeEntity>> =
+        recipeDao.searchByNameOrDescriptionOrInstructions(
+            StringBuilder().append(query, "%").toString()
+        )
 
     fun updateRecipe(recipe: RecipeEntity) {
         executor.execute {
