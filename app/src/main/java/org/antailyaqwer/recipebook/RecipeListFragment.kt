@@ -9,10 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
 import com.squareup.picasso.Picasso
 import org.antailyaqwer.recipebook.database.RecipeEntity
 import java.util.*
@@ -39,7 +36,8 @@ class RecipeListFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.recipe_list_fragment, container, false)
         recyclerView = view.findViewById(R.id.recipe_recycle_view) as RecyclerView
-        recyclerView.layoutManager = LinearLayoutManager(context)
+//        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager = GridLayoutManager(context, 2)
         recyclerView.adapter = RecipeListAdapter()
 
         //TODO первый парсинг, стоит переместить
@@ -50,7 +48,7 @@ class RecipeListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         listViewModel.recipeListLiveData.observe(
-            viewLifecycleOwner, { recipes -> recipes.let { updateUI(it) } }
+            viewLifecycleOwner, { recipes -> updateUI(recipes) }
         )
     }
 
@@ -91,7 +89,7 @@ class RecipeListFragment : Fragment() {
 
             nameTextView.text = recipe.name
             if (recipe.description != null) {
-                val regex = """^.*?[\.!\?](?:\s|$)""".toRegex()
+                val regex = """^.*?[.!?](?:\s|$)""".toRegex()
                 descriptionTextView.text =
                     regex.find(recipe.description)?.value ?: ""
             }

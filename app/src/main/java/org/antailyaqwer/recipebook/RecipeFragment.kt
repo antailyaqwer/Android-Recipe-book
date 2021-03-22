@@ -11,6 +11,8 @@ import androidx.fragment.app.viewModels
 import com.squareup.picasso.Picasso
 import org.antailyaqwer.recipebook.database.RecipeEntity
 import java.util.*
+import android.text.format.DateFormat
+import android.util.Log
 
 class RecipeFragment : Fragment() {
 
@@ -40,7 +42,6 @@ class RecipeFragment : Fragment() {
         difficultyTextView = view.findViewById(R.id.recipe_difficulty_fragment) as TextView
         descriptionTextView = view.findViewById(R.id.recipe_description_fragment) as TextView
         instructionsTextView = view.findViewById(R.id.recipe_instructions_fragment) as TextView
-
         return view
     }
 
@@ -55,16 +56,29 @@ class RecipeFragment : Fragment() {
     }
 
     private fun updateUI() {
-        //TODO изменить ImageView
         Picasso.get()
             .load(recipe.images[0])
             .into(imageView)
         nameTextView.text = recipe.name
-        dateTextView.text = "Last Updated: ${recipe.lastUpdated.toString()}"
+        dateTextView.text = try {
+            val temp = Date(recipe.lastUpdated.toLong())
+            DateFormat.format("dd/MM/yyyy HH:mm", temp)
+        } catch (e: Exception) {
+            Log.d("RecipeFragment", "Can't Parse Date", e as Throwable)
+            "Can't parse date"
+        }
         difficultyTextView.text = "Difficulty: ${recipe.difficulty.toString()}"
         descriptionTextView.text = recipe.description
-        //TODO Изменить разбиение по строкам.
-        instructionsTextView.text = recipe.instructions
+        instructionsTextView.text = with(java.lang.StringBuilder())
+        {
+            this.append("Instructions:\n")
+            var temp: String = recipe.instructions ?: ""
+            do {
+                this.append(temp.substringBefore("<br>"), '\n')
+                temp = temp.substringAfter("<br>")
+            } while (temp.contains("<br>", true))
+            this.toString()
+        }
     }
 
     companion object {
