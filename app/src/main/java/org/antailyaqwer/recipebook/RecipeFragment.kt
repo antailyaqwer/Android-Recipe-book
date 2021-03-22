@@ -42,7 +42,6 @@ class RecipeFragment : Fragment() {
         difficultyTextView = view.findViewById(R.id.recipe_difficulty_fragment) as TextView
         descriptionTextView = view.findViewById(R.id.recipe_description_fragment) as TextView
         instructionsTextView = view.findViewById(R.id.recipe_instructions_fragment) as TextView
-
         return view
     }
 
