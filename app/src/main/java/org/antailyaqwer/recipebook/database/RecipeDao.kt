@@ -1,10 +1,7 @@
 package org.antailyaqwer.recipebook.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import java.util.*
 
 @Dao
@@ -37,6 +34,9 @@ interface RecipeDao {
 
     @Query("SELECT * FROM recipeentity ORDER BY lastUpdated DESC")
     fun getAllRecipesOrderedByDateDescending(): LiveData<List<RecipeEntity>>
+
+    @Query("SELECT * FROM recipeentity ORDER BY uuid")
+    fun getAllRecipesList(): List<RecipeEntity>
 
     @Update
     fun updateRecipe(recipe: RecipeEntity)

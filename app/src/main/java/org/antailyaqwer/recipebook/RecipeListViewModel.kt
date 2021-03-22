@@ -1,12 +1,18 @@
 package org.antailyaqwer.recipebook
 
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import org.antailyaqwer.recipebook.api.ParserRepository
+import org.antailyaqwer.recipebook.database.RecipeEntity
 import org.antailyaqwer.recipebook.database.Repository
+
+private const val TAG = "RecipeListViewModel"
 
 class RecipeListViewModel : ViewModel() {
     private val repository = Repository.get()
-    val recipeListLiveData = repository.getAllRecipesOrderedByDateAscending()
+    val recipeListLiveData = repository.getAllRecipesOrderedByNameAscending()
+    private lateinit var mLiveData: MutableLiveData<List<RecipeEntity>>
 
-    //TODO Delete 3 useless entities
-    fun parseObjects() = repository.parseObjects()
+    fun parseObjects() {
+        ParserRepository().getRecipes()
+    }
 }

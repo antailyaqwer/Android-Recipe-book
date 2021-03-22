@@ -19,9 +19,4 @@ class RecipeViewModel : ViewModel() {
         recipeByIdLiveData.value = id
     }
 
-    fun saveRecipe(recipeEntity: RecipeEntity, lifecycleOwner: LifecycleOwner) {
-        if (repository.hasRecipe(recipeEntity)) {
-            repository.updateRecipe(recipeEntity)
-        }
-    }
 }

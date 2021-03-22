@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.antailyaqwer.recipebook.database.RecipeEntity
 import java.util.*
 
-class RecipeListFragment private constructor() : Fragment() {
+class RecipeListFragment : Fragment() {
 
     interface Callbacks {
         fun onRecipeSelected(recipeID: UUID)
@@ -49,7 +49,7 @@ class RecipeListFragment private constructor() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         listViewModel.recipeListLiveData.observe(
-            viewLifecycleOwner, { updateUI(it) }
+            viewLifecycleOwner, { recipes -> recipes.let { updateUI(it) } }
         )
     }
 
@@ -71,10 +71,11 @@ class RecipeListFragment private constructor() : Fragment() {
 
         private lateinit var recipe: RecipeEntity
         private val recipeImageView: ImageView =
-            itemView.findViewById(R.id.recipe_image_list)
-        private val nameTextView: TextView = itemView.findViewById(R.id.recipe_name_list)
+            itemView.findViewById(R.id.recipe_image_list) as ImageView
+        private val nameTextView: TextView =
+            itemView.findViewById(R.id.recipe_name_list) as TextView
         private val descriptionTextView: TextView =
-            itemView.findViewById(R.id.recipe_description_list)
+            itemView.findViewById(R.id.recipe_description_list) as TextView
 
         init {
             itemView.setOnClickListener(this)
@@ -85,10 +86,15 @@ class RecipeListFragment private constructor() : Fragment() {
             //TODO Изменить строку на картинку
 //            recipeImageView = ""
             nameTextView.text = recipe.name
-            descriptionTextView.text = recipe.name.takeWhile {
-                var temp: Byte = 0
-                if (it == '\n') temp++
-                temp < 2
+            if (recipe.description != null) {
+//                var temp = ""
+//                recipe.description.lines().forEachIndexed { index, s ->
+//                    if (index < 2) temp += s
+//                }
+//                descriptionTextView.text = temp
+                val regex = """^.*?[\.!\?](?:\s|$)""".toRegex()
+                descriptionTextView.text =
+                    regex.find(recipe.description)?.value ?: ""
             }
 
         }

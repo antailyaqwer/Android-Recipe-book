@@ -1,24 +1,23 @@
 package org.antailyaqwer.recipebook.api
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.gson.GsonBuilder
 import org.antailyaqwer.recipebook.database.RecipeEntity
-import org.antailyaqwer.recipebook.database.RecipeTypeConverter
+import org.antailyaqwer.recipebook.database.Repository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.text.DateFormat
-import java.util.*
+import java.util.ArrayList
+import java.util.concurrent.Executors
 
 private const val TAG = "ParserRepository"
 
 class ParserRepository {
 
     private val instanceApi: ParserApi
+    private val executor = Executors.newSingleThreadExecutor()
 
     init {
         val retrofit: Retrofit = Retrofit.Builder()
@@ -37,8 +36,10 @@ class ParserRepository {
         instanceApi = retrofit.create(ParserApi::class.java)
     }
 
-    fun getRecipes(): LiveData<List<RecipeEntity>> {
-        val responseLiveData: MutableLiveData<List<RecipeEntity>> = MutableLiveData()
+    //TODO Изменил на возврат List<RecipeEntity>
+    fun getRecipes(): List<RecipeEntity> {
+//        val responseLiveData: MutableLiveData<List<RecipeEntity>> = MutableLiveData()
+        val mutableList: MutableList<RecipeEntity> = ArrayList()
         val request: Call<RecipeResponse> = instanceApi.getRecipes()
 
         request.enqueue(object : Callback<RecipeResponse> {
@@ -50,14 +51,22 @@ class ParserRepository {
                 val recipeResponse: RecipeResponse? = response.body()
                 Log.d(TAG, recipeResponse.toString())
                 val items: List<RecipeEntity> = recipeResponse?.recipes ?: mutableListOf()
-//                items = items.filterNot { it.name.isBlank() }
-                responseLiveData.value = items
+                val repository = Repository.get()
+                executor.execute {
+                    items.forEach {
+                        if (it.uuid.toString().isNotEmpty() &&
+                            !repository.hasRecipe(it.uuid)
+                        ) {
+                            repository.addRecipe(it)
+                        }
+                    }
+                }
             }
 
             override fun onFailure(call: Call<RecipeResponse>, t: Throwable) {
                 Log.d(TAG, "Can't parse json", t)
             }
         })
-        return responseLiveData
+        return mutableList
     }
 }

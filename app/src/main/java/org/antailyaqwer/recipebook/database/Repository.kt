@@ -1,17 +1,14 @@
 package org.antailyaqwer.recipebook.database
 
 import android.content.Context
-import android.util.Log
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.map
+import androidx.lifecycle.*
 import androidx.room.Room
-import org.antailyaqwer.recipebook.api.ParserRepository
 import java.lang.IllegalStateException
 import java.util.*
 import java.util.concurrent.Executors
 
 private const val DATABASE_NAME = "recipe-database"
+private const val TAG = "Repository"
 
 class Repository private constructor(context: Context) {
 
@@ -23,21 +20,13 @@ class Repository private constructor(context: Context) {
     private val recipeDao = database.recipeDao()
     private val executor = Executors.newSingleThreadExecutor()
 
-    //TODO Возможно, переместить парсинг отсюда
-    private val parserRepository = ParserRepository()
-    fun parseObjects() {
-        parserRepository.getRecipes().map {
-            it.forEach { recipe ->
-                Log.d("Repository", "trying to fetch recipes")
-                addRecipe(recipe)
-            }
-        }
-    }
-
     fun getRecipe(id: UUID): LiveData<RecipeEntity?> = recipeDao.getRecipe(id)
 
     fun getAllRecipesOrderedByNameAscending(): LiveData<List<RecipeEntity>> =
         recipeDao.getAllRecipesOrderedByNameAscending()
+
+    private fun getAllRecipesList(): List<RecipeEntity> =
+        recipeDao.getAllRecipesList()
 
     fun getAllRecipesOrderedByDateAscending(): LiveData<List<RecipeEntity>> =
         recipeDao.getAllRecipesOrderedByDateAscending()
@@ -49,26 +38,27 @@ class Repository private constructor(context: Context) {
     }
 
     fun addRecipe(recipe: RecipeEntity) {
-        executor.execute {
-            recipeDao.addRecipe(recipe)
-        }
+//        executor.execute {
+        recipeDao.addRecipe(recipe)
+//        }
     }
 
-    fun hasRecipe(recipe: RecipeEntity): Boolean {
-        var temp = false
-        executor.execute {
-            getAllRecipesOrderedByNameAscending().map {
-                if (it.any { _recipe ->
-                        recipe.uuid == _recipe.uuid
-                    }) temp = true
+    fun hasRecipe(uuid: UUID): Boolean {
+//        executor.execute {
+        //TODO Создал специальный метод для получения в List
+        for (element in getAllRecipesList()) {
+            if (element.uuid == uuid) {
+                return true
             }
         }
-        return temp
+//        }
+        return false
     }
 
-    fun needUpdate(recipe: RecipeEntity, lifecycleOwner: LifecycleOwner): Boolean {
+    fun needUpdate(recipe: RecipeEntity): Boolean {
         var temp = false
         executor.execute {
+            //TODO заменить на Transformations.map
             getAllRecipesOrderedByNameAscending().map {
                 if (it.any { _recipe ->
                         recipe.uuid == _recipe.uuid && recipe.lastUpdated > _recipe.lastUpdated

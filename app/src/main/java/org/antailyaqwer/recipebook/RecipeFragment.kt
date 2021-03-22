@@ -11,7 +11,7 @@ import androidx.fragment.app.viewModels
 import org.antailyaqwer.recipebook.database.RecipeEntity
 import java.util.*
 
-class RecipeFragment private constructor() : Fragment() {
+class RecipeFragment : Fragment() {
 
     private val viewModel: RecipeViewModel by viewModels()
     private lateinit var recipe: RecipeEntity
@@ -33,12 +33,12 @@ class RecipeFragment private constructor() : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.recipe_fragment, container, false)
-        imageView = view.findViewById(R.id.recipe_image_list) as ImageView
-        nameTextView = view.findViewById(R.id.recipe_name_list) as TextView
-        dateTextView = view.findViewById(R.id.recipe_date) as TextView
-        difficultyTextView = view.findViewById(R.id.recipe_difficulty) as TextView
-        descriptionTextView = view.findViewById(R.id.recipe_description_list) as TextView
-        instructionsTextView = view.findViewById(R.id.recipe_instructions) as TextView
+        imageView = view.findViewById(R.id.recipe_image_fragment) as ImageView
+        nameTextView = view.findViewById(R.id.recipe_name_fragment) as TextView
+        dateTextView = view.findViewById(R.id.recipe_date_fragment) as TextView
+        difficultyTextView = view.findViewById(R.id.recipe_difficulty_fragment) as TextView
+        descriptionTextView = view.findViewById(R.id.recipe_description_fragment) as TextView
+        instructionsTextView = view.findViewById(R.id.recipe_instructions_fragment) as TextView
 
         return view
     }
