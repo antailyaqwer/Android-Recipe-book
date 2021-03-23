@@ -1,3 +1,4 @@
+
 # Android-Recipe-book
 Тестовое задание. API 21+.
 
@@ -16,3 +17,5 @@
  - Список похожих рецептов.
 
 Установка: Собрать проект в Android Studio или установить APK-file.
+![main-menu](https://user-images.githubusercontent.com/22077174/112133484-55a89e00-8bfe-11eb-9386-83190e4a8c15.png)
+![element](https://user-images.githubusercontent.com/22077174/112133538-61946000-8bfe-11eb-895f-2eb870b67a74.png)
