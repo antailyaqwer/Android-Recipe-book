@@ -41,11 +41,8 @@ class RecipeListFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.recipe_list_fragment, container, false)
         recyclerView = view.findViewById(R.id.recipe_recycle_view) as RecyclerView
-//        recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = GridLayoutManager(context, 2)
         recyclerView.adapter = RecipeListAdapter()
-
-        //TODO первый парсинг, стоит переместить
         listViewModel.parseObjects()
         return view
     }
