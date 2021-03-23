@@ -6,16 +6,16 @@
         android:id="@+id/search_bar_recipe"
         android:title="@string/search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/sort_by_name_ascending"
+        android:title="@string/sort_recipes_by_name_ascending"
         app:showAsAction="ifRoom" />
 
-    <!--    <item-->
-    <!--        android:id="@+id/sort_by_name"-->
-    <!--        android:title="@string/sort_recipes_by_name"-->
-    <!--        app:showAsAction="ifRoom" />-->
-
-    <!--    <item-->
-    <!--        android:id="@+id/sort_by_date"-->
-    <!--        android:title="@string/sort_recipes_by_date"-->
-    <!--        app:showAsAction="ifRoom" />-->
+    <item
+        android:id="@+id/sort_by_name_descending"
+        android:title="@string/sort_recipes_by_name_descending"
+        app:showAsAction="ifRoom" />
 
 </menu>

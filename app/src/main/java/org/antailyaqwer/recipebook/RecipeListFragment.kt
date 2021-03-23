@@ -66,8 +66,7 @@ class RecipeListFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
 
         inflater.inflate(R.menu.recipe_list_item, menu)
-        val searchItem: MenuItem = menu.findItem(R.id.search_bar_recipe)
-        val searchView = searchItem.actionView as SearchView
+        val searchView = menu.findItem(R.id.search_bar_recipe).actionView as SearchView
 
         searchView.apply {
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -90,6 +89,26 @@ class RecipeListFragment : Fragment() {
                     return true
                 }
             })
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.sort_by_name_ascending -> {
+                listViewModel.getAllRecipesByNameAscending().observe(viewLifecycleOwner) {
+                    recyclerView.adapter = RecipeListAdapter()
+                    updateUI(it)
+                }
+                true
+            }
+            R.id.sort_by_name_descending -> {
+                listViewModel.getAllRecipesByNameDescending().observe(viewLifecycleOwner) {
+                    recyclerView.adapter = RecipeListAdapter()
+                    updateUI(it)
+                }
+                true
+            }
+            else -> false
         }
     }
 

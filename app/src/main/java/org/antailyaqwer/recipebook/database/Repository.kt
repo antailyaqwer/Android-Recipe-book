@@ -24,6 +24,9 @@ class Repository private constructor(context: Context) {
     fun getAllRecipesOrderedByNameAscending(): LiveData<List<RecipeEntity>> =
         recipeDao.getAllRecipesOrderedByNameAscending()
 
+    fun getAllRecipesOrderedByNameDescending(): LiveData<List<RecipeEntity>> =
+        recipeDao.getAllRecipesOrderedByNameDescending()
+
     private fun getAllRecipesList(): List<RecipeEntity> =
         recipeDao.getAllRecipesList()
 
