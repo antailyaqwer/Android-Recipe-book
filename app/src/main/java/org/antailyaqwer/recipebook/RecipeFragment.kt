@@ -2,9 +2,6 @@ package org.antailyaqwer.recipebook
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.viewModels
@@ -13,6 +10,7 @@ import org.antailyaqwer.recipebook.database.RecipeEntity
 import java.util.*
 import android.text.format.DateFormat
 import android.util.Log
+import android.view.*
 
 class RecipeFragment : Fragment() {
 
@@ -29,7 +27,6 @@ class RecipeFragment : Fragment() {
         super.onCreate(savedInstanceState)
         val recipeId: UUID = arguments?.getSerializable("id") as UUID
         viewModel.loadRecipe(recipeId)
-        setHasOptionsMenu(false)
     }
 
     override fun onCreateView(
@@ -57,9 +54,7 @@ class RecipeFragment : Fragment() {
     }
 
     private fun updateUI() {
-        Picasso.get()
-            .load(recipe.images[0])
-            .into(imageView)
+        updateImage()
         nameTextView.text = recipe.name
         dateTextView.text = try {
             val temp = Date(recipe.lastUpdated.toLong())
@@ -80,6 +75,12 @@ class RecipeFragment : Fragment() {
             } while (temp.contains("<br>", true))
             this.toString()
         }
+    }
+
+    private fun updateImage() {
+        Picasso.get()
+            .load(recipe.images[0])
+            .into(imageView)
     }
 
     companion object {

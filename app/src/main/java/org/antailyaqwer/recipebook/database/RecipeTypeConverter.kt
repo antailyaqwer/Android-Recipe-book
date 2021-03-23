@@ -14,39 +14,6 @@ class RecipeTypeConverter {
     fun toUUID(uuid: String?): UUID? =
         UUID.fromString(uuid) ?: null
 
-//    @TypeConverter
-//    fun fromDate(date: Date?): Int? {
-//        val tempDate = date?.time
-//        // Для совместимости Long и Int в миллисекундах
-//        return tempDate?.toInt()?.div(1000)
-//    }
-
-//    @TypeConverter
-//    fun fromDate(date: Date?): Long? = try {
-//        date?.time
-//    } catch (e: Exception) {
-//        0L
-//    }
-//
-//    @TypeConverter
-//    fun toDate(date: Long?): Date? = try {
-//        date?.let { Date(it) }
-//    } catch (e: Exception) {
-//        Date()
-//    }
-//    @TypeConverter
-//    fun toDate(date: Int?): Date? {
-//        var tempDate: Long? = null
-//        // Для совместимости Long и Int в миллисекундах
-//        if (date != null) {
-//            tempDate = date.toLong()
-//            tempDate *= 1000
-//        }
-//        return tempDate?.let {
-//            Date(it)
-//        }
-//    }
-
     @TypeConverter
     fun fromImages(images: List<String>): String? =
         Gson().toJson(images)

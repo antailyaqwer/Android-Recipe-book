@@ -18,5 +18,4 @@ class RecipeViewModel : ViewModel() {
     fun loadRecipe(id: UUID) {
         recipeByIdLiveData.value = id
     }
-
 }

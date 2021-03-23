@@ -25,9 +25,6 @@ class ParserRepository {
             .addConverterFactory(
                 GsonConverterFactory.create(
                     GsonBuilder()
-//                        .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-//                        .setDateFormat(DateFormat.FULL, DateFormat.FULL)
-//                        .excludeFieldsWithoutExposeAnnotation()
                         .create()
                 )
             )
@@ -36,9 +33,7 @@ class ParserRepository {
         instanceApi = retrofit.create(ParserApi::class.java)
     }
 
-    //TODO Изменил на возврат List<RecipeEntity>
     fun getRecipes(): List<RecipeEntity> {
-//        val responseLiveData: MutableLiveData<List<RecipeEntity>> = MutableLiveData()
         val mutableList: MutableList<RecipeEntity> = ArrayList()
         val request: Call<RecipeResponse> = instanceApi.getRecipes()
 
@@ -49,7 +44,6 @@ class ParserRepository {
             ) {
                 Log.d(TAG, "Parsing json...")
                 val recipeResponse: RecipeResponse? = response.body()
-                Log.d(TAG, recipeResponse.toString())
                 val items: List<RecipeEntity> = recipeResponse?.recipes ?: mutableListOf()
                 val repository = Repository.get()
                 executor.execute {
