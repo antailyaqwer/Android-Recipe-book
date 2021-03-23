@@ -20,4 +20,7 @@ class RecipeListViewModel : ViewModel() {
 
     fun getAllRecipesByNameAscending() =
         repository.getAllRecipesOrderedByNameAscending()
+
+    fun getAllRecipesByNameDescending() =
+        repository.getAllRecipesOrderedByNameDescending()
 }

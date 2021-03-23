@@ -3,6 +3,6 @@
     <string name="image_of_recipe">Image of recipe</string>
     <string name="search">Search</string>
     <string name="clear_search">Clear search</string>
-    <string name="sort_recipes_by_name">Sort recipes by name</string>
-    <string name="sort_recipes_by_date">Sort recipes by date</string>
+    <string name="sort_recipes_by_name_ascending">Sort recipes by name ascending</string>
+    <string name="sort_recipes_by_name_descending">Sort recipes by name descending</string>
 </resources>
