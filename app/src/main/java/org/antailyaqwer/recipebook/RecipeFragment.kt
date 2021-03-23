@@ -2,9 +2,6 @@ package org.antailyaqwer.recipebook
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.viewModels
@@ -13,6 +10,9 @@ import org.antailyaqwer.recipebook.database.RecipeEntity
 import java.util.*
 import android.text.format.DateFormat
 import android.util.Log
+import android.view.*
+
+private const val TAG = "RecipeFragment"
 
 class RecipeFragment : Fragment() {
 
@@ -24,6 +24,7 @@ class RecipeFragment : Fragment() {
     private lateinit var difficultyTextView: TextView
     private lateinit var descriptionTextView: TextView
     private lateinit var instructionsTextView: TextView
+//    private lateinit var gestureDetector: GestureDetector
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +44,7 @@ class RecipeFragment : Fragment() {
         difficultyTextView = view.findViewById(R.id.recipe_difficulty_fragment) as TextView
         descriptionTextView = view.findViewById(R.id.recipe_description_fragment) as TextView
         instructionsTextView = view.findViewById(R.id.recipe_instructions_fragment) as TextView
+//        gestureDetector = GestureDetector(context, GestureListener())
         return view
     }
 
@@ -57,9 +59,7 @@ class RecipeFragment : Fragment() {
     }
 
     private fun updateUI() {
-        Picasso.get()
-            .load(recipe.images[0])
-            .into(imageView)
+        updateImage()
         nameTextView.text = recipe.name
         dateTextView.text = try {
             val temp = Date(recipe.lastUpdated.toLong())
@@ -81,6 +81,44 @@ class RecipeFragment : Fragment() {
             this.toString()
         }
     }
+
+    private fun updateImage() {
+        Picasso.get()
+            .load(recipe.images[0])
+            .into(imageView)
+//        imageView.setOnTouchListener { v, event ->
+//            if (event.action == MotionEvent.ACTION_MOVE) {
+//                Log.d(TAG,"SetOnTouchListener, gesture detector next")
+//                gestureDetector.onTouchEvent(event)
+//                true
+//            } else false
+//        }
+    }
+
+//    private inner class GestureListener : GestureDetector.SimpleOnGestureListener() {
+//
+//        //        private val minSwippingDistance = 50
+//        private val thresholdVelocity = 50
+//        override fun onFling(
+//            e1: MotionEvent?,
+//            e2: MotionEvent?,
+//            velocityX: Float,
+//            velocityY: Float
+//        ): Boolean {
+//            //Если свайп недостаточно быстрый
+//            if (abs(velocityX) < thresholdVelocity && abs(velocityY) < thresholdVelocity) return false
+//            if (abs(velocityX) > abs(velocityY)) {
+//                //Горизонтальный жест вправо
+//                if (velocityX >= 0) {
+//                    Log.d(TAG, "Horizontal swipe to right")
+//                } else {//Горизонтальный жест влево
+//                    Log.d(TAG, "Horizontal swipe to left")
+//                }
+//            } else return false //Игнорируем ось Y
+////            return super.onFling(e1, e2, velocityX, velocityY)
+//            return true
+//        }
+//    }
 
     companion object {
         fun newInstance(recipeId: UUID): RecipeFragment =
