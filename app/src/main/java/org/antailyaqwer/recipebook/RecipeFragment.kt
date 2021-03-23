@@ -11,6 +11,7 @@ import java.util.*
 import android.text.format.DateFormat
 import android.util.Log
 import android.view.*
+import kotlin.math.abs
 
 private const val TAG = "RecipeFragment"
 
@@ -24,7 +25,7 @@ class RecipeFragment : Fragment() {
     private lateinit var difficultyTextView: TextView
     private lateinit var descriptionTextView: TextView
     private lateinit var instructionsTextView: TextView
-//    private lateinit var gestureDetector: GestureDetector
+    private lateinit var gestureDetector: GestureDetector
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +45,7 @@ class RecipeFragment : Fragment() {
         difficultyTextView = view.findViewById(R.id.recipe_difficulty_fragment) as TextView
         descriptionTextView = view.findViewById(R.id.recipe_description_fragment) as TextView
         instructionsTextView = view.findViewById(R.id.recipe_instructions_fragment) as TextView
-//        gestureDetector = GestureDetector(context, GestureListener())
+        gestureDetector = GestureDetector(context, GestureListener())
         return view
     }
 
@@ -86,19 +87,19 @@ class RecipeFragment : Fragment() {
         Picasso.get()
             .load(recipe.images[0])
             .into(imageView)
-//        imageView.setOnTouchListener { v, event ->
-//            if (event.action == MotionEvent.ACTION_MOVE) {
-//                Log.d(TAG,"SetOnTouchListener, gesture detector next")
-//                gestureDetector.onTouchEvent(event)
-//                true
-//            } else false
-//        }
+        imageView.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_MOVE) {
+                Log.d(TAG, "setOnTouchListener")
+                gestureDetector.onTouchEvent(event)
+            }
+            true
+        }
+
     }
 
-//    private inner class GestureListener : GestureDetector.SimpleOnGestureListener() {
-//
-//        //        private val minSwippingDistance = 50
-//        private val thresholdVelocity = 50
+    private inner class GestureListener : GestureDetector.SimpleOnGestureListener() {
+
+        private val thresholdVelocity = 50
 //        override fun onFling(
 //            e1: MotionEvent?,
 //            e2: MotionEvent?,
@@ -115,10 +116,28 @@ class RecipeFragment : Fragment() {
 //                    Log.d(TAG, "Horizontal swipe to left")
 //                }
 //            } else return false //Игнорируем ось Y
-////            return super.onFling(e1, e2, velocityX, velocityY)
 //            return true
 //        }
-//    }
+
+        override fun onScroll(
+            e1: MotionEvent?,
+            e2: MotionEvent?,
+            distanceX: Float,
+            distanceY: Float
+        ): Boolean {
+            //Если свайп недостаточно быстрый
+            if (abs(distanceX) < thresholdVelocity && abs(distanceY) < thresholdVelocity) return false
+            if (abs(distanceX) > abs(distanceY)) {
+                //Горизонтальный жест вправо
+                if (distanceX >= 0) {
+                    Log.d(TAG, "Horizontal swipe to right")
+                } else {//Горизонтальный жест влево
+                    Log.d(TAG, "Horizontal swipe to left")
+                }
+            } else return false //Игнорируем ось Y
+            return true
+        }
+    }
 
     companion object {
         fun newInstance(recipeId: UUID): RecipeFragment =
